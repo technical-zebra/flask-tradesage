@@ -5,9 +5,9 @@ import yfinance as yf
 
 app = Flask(__name__)
 
-secret = os.environ.get('API_KEY') #"api" 
-mode = os.environ.get('MODE') #"debug"
-port = os.environ.get('PORT')
+secret = "api" #os.environ.get('API_KEY') # 
+mode = "debug"# os.environ.get('MODE') #
+#port = os.environ.get('PORT')
 
 @app.route('/')
 def hello_world():
@@ -67,14 +67,23 @@ def stock_data():
         if start_date and end_date:
             # Fetch data using start_date and end_date
             if mode == "debug": print("using start_date and end_date")
-            data = yf.Ticker(symbol).history(start=start_date, end=end_date)
+            data = yf.download(tickers=symbol, start=start_date, end=end_date)
         else:
             # Fetch data using interval and period
             if mode == "debug": print("using interval and period")
-            data = yf.Ticker(symbol).history(interval=interval, period=period)
+            data = yf.download(tickers=symbol, interval=interval, period=period)
 
-        if mode == "debug": print(data)
+        
+        data.reset_index(inplace=True)
+        if 'Date' in data.columns:
+            data['Datetime'] = data['Date'].dt.strftime('%Y-%m-%d %H:%M:%S')
+            data.drop(columns=['Date'], inplace=True)
+        else:
+            data['Datetime'] = data['Datetime'].dt.strftime('%Y-%m-%d %H:%M:%S')
+
         data = data.to_json(orient='records')
+        if mode == "debug": print(data)
+
         
         return data
     except Exception as e:
