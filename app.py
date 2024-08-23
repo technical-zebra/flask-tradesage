@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 secret = os.environ.get('API_KEY') #"api" 
 mode = os.environ.get('MODE') #"debug"
+port = os.environ.get('PORT')
 
 @app.route('/')
 def hello_world():
@@ -81,3 +82,4 @@ def stock_data():
 
 if __name__ == '__main__':
     if mode == "debug": app.run(host='0.0.0.0', port=8080)
+    else: app.run(host='0.0.0.0',port=port)
