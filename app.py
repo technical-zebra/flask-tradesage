@@ -27,7 +27,7 @@ def stock_data():
     # Validate API key (assuming a simple comparison for demonstration)
     if mode == "debug": print(api_key, secret)
     if api_key != secret:
-        return jsonify({'error': 'Invalid API key', 'database_url': secret, 'api_key': api_key}), 403
+        return jsonify({'error': 'Invalid API key'}), 403
 
     # Validate data type
     if data_type not in ['stock', 'forex']:
