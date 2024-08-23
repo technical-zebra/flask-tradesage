@@ -5,9 +5,9 @@ import yfinance as yf
 
 app = Flask(__name__)
 
-secret = "api" #os.environ.get('API_KEY') # 
-mode = "debug"# os.environ.get('MODE') #
-#port = os.environ.get('PORT')
+secret = os.environ.get('API_KEY') # 
+mode =  os.environ.get('MODE') #
+port = os.environ.get('PORT')
 
 @app.route('/')
 def hello_world():
